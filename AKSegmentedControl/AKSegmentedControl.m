@@ -23,7 +23,7 @@
 
 #import "AKSegmentedControl.h"
 
-#define kAKButtonSeparatorWidth 0.0
+#define kAKButtonSeparatorWidth 1.0
 
 @interface AKSegmentedControl ()
 

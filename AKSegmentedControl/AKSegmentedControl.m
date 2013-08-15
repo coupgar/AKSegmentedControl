@@ -107,6 +107,9 @@
         
         if (increment < separtorsNumber)
         {
+          if (increment >= separatorsArray.count) {
+            NSLog(@"abc");
+          }
             UIImageView *separatorImageView = separatorsArray[increment];
             [separatorImageView setFrame:CGRectMake(CGRectGetMaxX(button.frame),
                                                     offsetY,
@@ -171,12 +174,16 @@
     
     _buttonsArray = buttonsArray;
     
-    [_buttonsArray enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-         [self addSubview:(UIButton *)obj];
-        [(UIButton *)obj addTarget:self action:@selector(segmentButtonPressed:) forControlEvents:UIControlEventTouchDown];
-        [(UIButton *)obj setTag:idx];
-    }];
-    
+//    [_buttonsArray enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+  for (int idx = 0 ; idx < _buttonsArray.count; idx ++) {
+    UIButton *obj = _buttonsArray[idx];
+    [self addSubview:(UIButton *)obj];
+    [(UIButton *)obj addTarget:self action:@selector(segmentButtonPressed:) forControlEvents:UIControlEventTouchDown];
+    [(UIButton *)obj setTag:idx];
+  }
+
+//    }];
+  
     [self rebuildSeparators];
     [self updateButtons];
 }
@@ -225,17 +232,23 @@
 - (void)rebuildSeparators
 {
     [separatorsArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    
+    if (0 == _buttonsArray.count)
+    {
+      return;
+    }
     NSUInteger separatorsNumber = [_buttonsArray count] - 1;
+ 
     
-    [_buttonsArray enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if (idx < separatorsNumber)
-        {
-            UIImageView *separatorImageView = [[UIImageView alloc] initWithImage:_separatorImage];
-            [self addSubview:separatorImageView];
-            [separatorsArray addObject:separatorImageView];
-        }
-    }];
+//    [_buttonsArray enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+  for (int idx = 0; idx < separatorsNumber; idx ++) {
+    if (idx < separatorsNumber)
+    {
+      UIImageView *separatorImageView = [[UIImageView alloc] initWithImage:_separatorImage];
+      [self addSubview:separatorImageView];
+      [separatorsArray addObject:separatorImageView];
+    }
+  }
+//    }];
 }
 
 - (UIImageView *)backgroundImageView
